@@ -12,6 +12,34 @@ const jogoDAO = require('../model/dao/jogoDAO.js');
 const message = require('./modulo/config.js');
 
 
+//Função para retornar todos os itens da tabela recebidos da model
+const selecionarTodosJogos = async function () {
+
+     //Import do arquivo do acessso ao BD
+    //Solicita ao DAO todos os alunos do BD
+    let dadosJogo = await jogoDAO.selectAllJogo()
+
+    //Cria um objeto do tipo JSON
+    let dadosJson = {}
+
+    //Valida se o bd teve registros
+    if (dadosJogo) {
+        //Adiciona o array de alunos e um JSON para retornar ao app
+        dadosJson.status = 200;
+        dadosJson.count = dadosJogo.length;
+        dadosJson.jogos = dadosJogo
+    } else {
+        return message.ERROR_NOT_FOUND
+    }
+};
+
+
+//Função para buscar um item filtrado pelo id, que será encaminhado para a model
+const buscarIdJogo = async function (id) {
+
+};
+
+
 //Função para inserir um aluno
 const inserirJogo = async function (dadosJogo) {
 
@@ -38,7 +66,7 @@ const inserirJogo = async function (dadosJogo) {
             dadosJson.status = message.CREATED_ITEM.status
             dadosJson.jogo = dadosJogo
 
-            return dadosJogo
+            return dadosJson
             
         }else
 
@@ -60,16 +88,6 @@ const deletarJogo = async function (idJogo) {
 };
 
 
-//Função para retornar todos os itens da tabela recebidos da model
-const selecionarTodosJogos = async function () {
-
-};
-
-
-//Função para buscar um item filtrado pelo id, que será encaminhado para a model
-const buscarIdJogo = async function (id) {
-
-};
 
 
 module.exports = {
