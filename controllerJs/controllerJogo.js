@@ -28,6 +28,7 @@ const selecionarTodosJogos = async function () {
         dadosJson.status = 200;
         dadosJson.count = dadosJogo.length;
         dadosJson.jogos = dadosJogo
+        return dadosJson
     } else {
         return message.ERROR_NOT_FOUND
     }
@@ -42,26 +43,27 @@ const buscarIdJogo = async function (id) {
 
 //Função para inserir um aluno
 const inserirJogo = async function (dadosJogo) {
+    
 
-    let erro = {}
-
-    if (dadosJogo.nome_jogo == '' || dadosJogo.nome_jogo == undefined || dadosJogo.nome_jogo.length > 45 ||
-        dadosJogo.descricao_jogo == '' || dadosJogo.descricao_jogo == undefined || dadosJogo.descricao_jogo.length > 500 
+    if (dadosJogo.nome == '' || dadosJogo.nome == undefined || dadosJogo.nome.length > 45 ||
+        dadosJogo.descricao == '' || dadosJogo.descricao == undefined 
         
        ) {
-        message.ERROR_REQUIRED_DATA
+        
+       return message.ERROR_REQUIRED_DATA
+
 
     } else {
-
+        
         //Envia os dados para o model a serem inseridos no BD
-        let status = await jogoDAO.insertJogo(dadosJogo)
-
+        let status = await jogoDAO.insertJogo(dadosJogo) 
+        
+        
         if (status) {
-            
             let dadosJson = {}
 
-            let jogoNovoId = await jogoDAO.selectLastId();
-            dadosJogo.id = jogoNovoId;
+            // let jogoNovoId = await jogoDAO.selectLastId();
+            // dadosJogo.id = jogoNovoId;
 
             dadosJson.status = message.CREATED_ITEM.status
             dadosJson.jogo = dadosJogo

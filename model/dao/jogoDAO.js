@@ -39,28 +39,29 @@ const selectByIdJogo = async function (idJogo){
 //Inserir um novo registro no banco de dados
 const insertJogo = async function (dadosJogo) {
 
+    
+
     //Script SQL para inserir os dados no BD
     let sql = `insert into tbl_jogo (
 
                 nome,
-                descricao
+                descricao,
+                id_nivel
                 )
                 
                 values(
 
                 '${dadosJogo.nome}',
-                '${dadosJogo.descricao}'
+                '${dadosJogo.descricao}',
+                ${dadosJogo.id_nivel}
                 )`;
+            
 
 
  //Executa o script SQL no BD e recebemos o retorno se deu certo ou não
-    let result = await prisma.$executeRawUnsafe(sql)
-    
-        if(result)
-            return true
-    
-        else
-            return false
+ const test = await prisma.$executeRawUnsafe(sql)
+
+ return test
 };
 
 
