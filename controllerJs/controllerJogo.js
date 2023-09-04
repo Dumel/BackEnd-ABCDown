@@ -105,7 +105,37 @@ const inserirJogo = async function (dadosJogo) {
 
 //Função para receber os dados do APP e enviar para a model para atualizara um item existente
 const atualizarJogo = async function (dadosJogo, idJogo) {
+    if (dadosJogo.nome == '' || dadosJogo.nome == undefined || dadosJogo.nome.length > 45 ||
+        dadosJogo.descricao == '' || dadosJogo.descricao == undefined
 
+    ) {
+        return message.ERROR_REQUIRED_DATA
+
+        //Validação para o ID
+    } else if (idJogo == '' || idJogo == undefined || isNaN(idJogo)) {
+
+        return message.ERROR_REQUIRED_ID
+    
+    } else {
+        //Add o id no json com todos os dados
+        dadosJogo.id = idJogo
+
+        let status = await nivelDAO.UpdateNivel(dadosJogo)
+
+        if (status) {
+            
+            let dadosJSON = {}
+
+            dadosJSON.status = message.UPDATE_ITEM.status
+            dadosJSON.niveis = dadosJogo
+
+            return dadosJSON
+        
+        }else
+
+            return message.ERROR_INTERNAL_SERVER
+
+    }
 };
 
 
