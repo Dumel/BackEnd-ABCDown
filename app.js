@@ -106,12 +106,28 @@ app.post('/v1/abcdown/jogo', cors(), bodyJSON, async function(request, response)
 //EndPoints que atualiza um aluno pelo ID
 app.put('/v1/abcdown/jogo/:id', cors(), bodyJSON, async function(request, response){
 
+           //Recebe os dados do body
+    let dadosBody = request.body
+
+    //Recebe o id do aluno
+    let idJogo = request.params.id
+
+    let resultUpdateDados = await controllerJogo.atualizarJogo(dadosBody, idJogo)
+
+    response.status(resultUpdateDados.status)
+    response.json(resultUpdateDados)
 })
 
 
 //EndPoints que exclui um aluno pelo ID
 app.delete('/v1/abcdown/jogo/:id', cors(), async function(request, response){
 
+       let idJogo = request.params.id
+
+       let resultDeleteDados = await controllerJogo.deletarJogo(idJogo)
+
+       response.status(resultDeleteDados.status)
+        response.json(resultDeleteDados)
 })
 
 

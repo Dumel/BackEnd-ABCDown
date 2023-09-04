@@ -83,7 +83,7 @@ const updateJogo = async function (dadosJogo){
     let sql = `update tbl_jogo set
                         nome = '${dadosJogo.nome}',
                         descricao = '${dadosJogo.descricao}',
-                        id_nivel = ${dadosJogo.id_nivel}`
+                        id_nivel = '${dadosJogo.id_nivel}'`
 
     let result = await prisma.$executeRawUnsafe(sql)
 
@@ -95,8 +95,17 @@ const updateJogo = async function (dadosJogo){
 
 
 //Excluir um registro no Banco de dados
-const deleteJogo = async function (idJogo){
+const deleteJogo = async function (id){
     
+    let sql = `delete from tbl_jogo 
+    where id = ${id}`
+
+    let result = await prisma.$executeRawUnsafe(sql)
+
+    if (result)
+        return true
+    else
+        return false
 };
 
 

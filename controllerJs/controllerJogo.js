@@ -120,14 +120,14 @@ const atualizarJogo = async function (dadosJogo, idJogo) {
         //Add o id no json com todos os dados
         dadosJogo.id = idJogo
 
-        let status = await nivelDAO.UpdateNivel(dadosJogo)
+        let status = await jogoDAO.updateJogo(dadosJogo)
 
         if (status) {
             
             let dadosJSON = {}
 
             dadosJSON.status = message.UPDATE_ITEM.status
-            dadosJSON.niveis = dadosJogo
+            dadosJSON.jogos = dadosJogo
 
             return dadosJSON
         
@@ -142,6 +142,20 @@ const atualizarJogo = async function (dadosJogo, idJogo) {
 //Função para excluir um aluno filtrado pelo ID, que será encaminhado para a model
 const deletarJogo = async function (idJogo) {
 
+    if (idJogo == '' || idJogo == undefined || isNaN(idJogo)) {
+
+        return message.ERROR_REQUIRED_ID
+
+    } else {
+
+
+        let status = await jogoDAO.deleteJogo(idJogo)
+
+        if (status)
+            return message.DELETE_ITEM
+        else
+            return message.ERROR_INTERNAL_SERVER
+    }
 };
 
 
