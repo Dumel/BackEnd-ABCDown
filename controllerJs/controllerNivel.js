@@ -62,7 +62,7 @@ const selecionarTodosNiveis = async function () {
    }
 };
 
-const buscarIdJogo = async function (id) {
+const buscarIdNivel = async function (id) {
 
     //Validação para id
     if (id == '' || id == undefined || isNaN(id))
@@ -92,10 +92,63 @@ const buscarIdJogo = async function (id) {
 
 }
 
+//Função para receber os dados do APP e enviar para a model para atualizara um item existente
+const atualizarNivel = async function (dadosJogo, idJogo) {
 
+    if (dadosJogo.nivel == '' || dadosJogo.nivel == undefined ||
+        dadosJogo.descricao == '' || dadosJogo.descricao == undefined
+
+    ) {
+        return message.ERROR_REQUIRED_DATA
+
+        //Validação para o ID
+    } else if (idJogo == '' || idJogo == undefined || isNaN(idJogo)) {
+
+        return message.ERROR_REQUIRED_ID
+    
+    } else {
+        //Add o id no json com todos os dados
+        dadosJogo.id = idJogo
+
+        let status = await nivelDAO.UpdateNivel(dadosJogo)
+
+        if (status) {
+            
+            let dadosJSON = {}
+
+            dadosJSON.status = message.UPDATE_ITEM.status
+            dadosJSON.niveis = dadosJogo
+
+            return dadosJSON
+        
+        }else
+
+            return message.ERROR_INTERNAL_SERVER
+
+    }
+}
+
+const deletarNivel = async function (idJogo) {
+    if (idJogo == '' || idJogo == undefined || isNaN(idJogo)) {
+
+        return message.ERROR_REQUIRED_ID
+
+    } else {
+
+
+        let status = await nivelDAO.deleteNivel(idJogo)
+
+        if (status)
+            return message.DELETE_ITEM
+        else
+            return message.ERROR_INTERNAL_SERVER
+    }
+}
 
 module.exports = {
     inserirNivel,
     selecionarTodosNiveis,
-    buscarIdJogo
+    buscarIdNivel,
+    atualizarNivel,
+    deletarNivel
 }

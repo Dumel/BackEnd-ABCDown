@@ -38,6 +38,31 @@ const selecionarTodosJogos = async function () {
 //Função para buscar um item filtrado pelo id, que será encaminhado para a model
 const buscarIdJogo = async function (id) {
 
+     //Validação para id
+     if (id == '' || id == undefined || isNaN(id))
+     return message.ERROR_REQUIRED_ID
+ else {
+
+
+     //Solicita ao DAO todos os alunos do BD
+     let dadosJogo = await jogoDAO.selectByIdJogo(id)
+
+     //Cria um objeto do tipo JSON
+     let dadosJSON = {}
+
+     //Valida se o bd teve registros
+     if (dadosJogo) {
+         //Adiciona o array de alunos e um JSON para retornar ao app
+         dadosJSON.status = 200
+         dadosJSON.jogos = dadosJogo
+         return dadosJSON
+
+     } else {
+
+         return message.ERROR_NOT_FOUND
+     }
+
+ }
 };
 
 

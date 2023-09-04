@@ -66,6 +66,14 @@ app.get('/v1/abcdown/jogo', cors(), async function(request, response){
 //EndPoints retorna dados do aluno pelo id
 app.get('/v1/abcdown/jogo/:id', cors(), async function(request, response){
 
+       let idJogo = request.params.id;
+
+     //Solicita a controller que retorne todos os alunos do BD
+     let dados = await controllerJogo.buscarIdJogo(idJogo)
+
+     //Valida se existem registros para retornar na requisição
+     response.status(dados.status)
+     response.json(dados)
 });
 
 
@@ -157,18 +165,45 @@ app.get('/v1/abcdown/nivel/:id', cors(), async function(request, response){
        let idNivel = request.params.id;
    
         //Solicita a controller que retorne todos os alunos do BD
-        let dados = await controllerNivel.buscarIdJogo(idNivel)
+        let dados = await controllerNivel.buscarIdNivel(idNivel)
    
         //Valida se existem registros para retornar na requisição
         response.status(dados.status)
         response.json(dados)
    })
 
+//EndPoints que atualiza um aluno pelo ID
+app.put('/v1/abcdown/nivel/:id', cors(), bodyJSON, async function(request, response){
+
+       //Recebe os dados do body
+    let dadosBody = request.body
+
+    //Recebe o id do aluno
+    let idJogo = request.params.id
+
+    let resultUpdateDados = await controllerNivel.atualizarNivel(dadosBody, idJogo)
+
+    response.status(resultUpdateDados.status)
+    response.json(resultUpdateDados)
+})
+
+
+//EndPoints que exclui um aluno pelo ID
+app.delete('/v1/abcdown/nivel/:id', cors(), async function(request, response){
+    
+    let idNivel = request.params.id
+
+    let resultDeleteDados = await controllerNivel.deletarNivel(idNivel)
+
+    response.status(resultDeleteDados.status)
+    response.json(resultDeleteDados)
+})
 
 
 
 
-app.listen(8000, function(){
+
+app.listen(8007, function(){
        console.log('Servidor aguardando requisições na porta 8080');
    })
 

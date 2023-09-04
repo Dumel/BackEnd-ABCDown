@@ -65,11 +65,41 @@ const selectByIdNivel = async function (id) {
         return false
 }
 
+//Atualizar um registro existente no banco de dados
+const UpdateNivel = async function (dadosNivel) {
+   let sql = `update tbl_nivel set
+                        nivel = '${dadosNivel.nivel}',
+                        descricao = '${dadosNivel.descricao}'`
+
+    let result = await prisma.$executeRawUnsafe(sql)
+
+    if (result)
+        return true
+    else
+        return false
+    
+}
+
+//Excluir um registro no Banco de dados
+const deleteNivel = async function (id) {
+    let sql = `delete from tbl_nivel 
+                        where id = ${id}`
+
+    let result = await prisma.$executeRawUnsafe(sql)
+
+    if (result)
+        return true
+    else
+        return false
+}
+
 
 
 
 module.exports = {
     insertNivel,
     selectAllNivel,
-    selectByIdNivel
+    selectByIdNivel,
+    UpdateNivel,
+    deleteNivel
 }

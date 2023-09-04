@@ -32,8 +32,20 @@ const selectAllJogo = async function (dadosJogo){
 
 
 //retorna um Registro do banco de dados
-const selectByIdJogo = async function (idJogo){
+const selectByIdJogo = async function (id){
 
+    //Variável com scriptSQL para executar no BD
+    let sql = `select * from tbl_jogo where id = ${id}`
+
+    //Executa bo banxo de dados o scriptSQL
+    //$queryRawUnsafe() é utilizado quando o scriptSQL estar em uma variável
+    //$queryRaw() é utilizado quansonpassar o scipt direto no metodo(Ex>$queryRaw('select * from tbl_aluno'))
+    let rsJogo = await prisma.$queryRawUnsafe(sql)
+
+    if (rsJogo.length > 0)
+        return rsJogo
+    else
+        return false
 }
 
 //Inserir um novo registro no banco de dados
@@ -68,6 +80,17 @@ const insertJogo = async function (dadosJogo) {
 //Atualizar um registro existente no banco de dados
 const updateJogo = async function (dadosJogo){
 
+    let sql = `update tbl_jogo set
+                        nome = '${dadosJogo.nome}',
+                        descricao = '${dadosJogo.descricao}',
+                        id_nivel = ${dadosJogo.id_nivel}`
+
+    let result = await prisma.$executeRawUnsafe(sql)
+
+    if (result)
+        return true
+    else
+        return false
 };
 
 
