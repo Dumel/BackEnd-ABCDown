@@ -71,7 +71,8 @@ const inserirJogo = async function (dadosJogo) {
     
 
     if (dadosJogo.nome == '' || dadosJogo.nome == undefined || dadosJogo.nome.length > 45 ||
-        dadosJogo.descricao == '' || dadosJogo.descricao == undefined 
+        dadosJogo.descricao == '' || dadosJogo.descricao == undefined ||
+        dadosJogo.id_nivel == '' || dadosJogo.id_nivel == undefined
         
        ) {
         
@@ -105,8 +106,10 @@ const inserirJogo = async function (dadosJogo) {
 
 //Função para receber os dados do APP e enviar para a model para atualizara um item existente
 const atualizarJogo = async function (dadosJogo, idJogo) {
+
     if (dadosJogo.nome == '' || dadosJogo.nome == undefined || dadosJogo.nome.length > 45 ||
-        dadosJogo.descricao == '' || dadosJogo.descricao == undefined
+        dadosJogo.descricao == '' || dadosJogo.descricao == undefined ||
+        dadosJogo.id_nivel == '' || dadosJogo.id_nivel == undefined
 
     ) {
         return message.ERROR_REQUIRED_DATA

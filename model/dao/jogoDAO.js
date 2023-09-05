@@ -65,9 +65,11 @@ const insertJogo = async function (dadosJogo) {
 
                 '${dadosJogo.nome}',
                 '${dadosJogo.descricao}',
-                ${dadosJogo.id_nivel}
+                 ${dadosJogo.id_nivel},
+                (SELECT nivel, descricao FROM tbl_nivel WHERE nivel, descricao = '${dadosJogo.nivel}', '${dadosJogo.descricao}')
                 )`;
             
+    //(SELECT id_nivel FROM nivel WHERE nome_nivel = '${dadosJogo.nome_nivel}')
 
 
  //Executa o script SQL no BD e recebemos o retorno se deu certo ou não
