@@ -6,10 +6,8 @@
  
 **********************************************************************************************************************************************************/
 
-//Import da biblioteca do prisma client (responsável por manipular dados no BD)
 const {PrismaClient} = require('@prisma/client');
 
-//Instancia da classe do PrismaClient
 const prisma = new PrismaClient();
 
 const insertNivel = async function (dadosNivel){
@@ -35,7 +33,6 @@ const insertNivel = async function (dadosNivel){
 
 const selectAllNivel = async function (dadosNivel) {
 
-    //Variável com scriptSQL para executar no BD
     let sql = 'select * from tbl_nivel'
 
 
@@ -48,15 +45,10 @@ const selectAllNivel = async function (dadosNivel) {
 }
 
 
-
 const selectByIdNivel = async function (id) {
 
-    //Variável com scriptSQL para executar no BD
     let sql = `select * from tbl_nivel where id = ${id}`
 
-    //Executa bo banxo de dados o scriptSQL
-    //$queryRawUnsafe() é utilizado quando o scriptSQL estar em uma variável
-    //$queryRaw() é utilizado quansonpassar o scipt direto no metodo(Ex>$queryRaw('select * from tbl_aluno'))
     let rsNivel = await prisma.$queryRawUnsafe(sql)
 
     if (rsNivel.length > 0)
@@ -65,7 +57,6 @@ const selectByIdNivel = async function (id) {
         return false
 }
 
-//Atualizar um registro existente no banco de dados
 const UpdateNivel = async function (dadosNivel) {
    let sql = `update tbl_nivel set
                         nivel = '${dadosNivel.nivel}',
@@ -80,7 +71,6 @@ const UpdateNivel = async function (dadosNivel) {
     
 }
 
-//Excluir um registro no Banco de dados
 const deleteNivel = async function (id) {
     let sql = `delete from tbl_nivel 
                         where id = ${id}`

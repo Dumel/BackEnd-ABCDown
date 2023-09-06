@@ -7,21 +7,26 @@
 **********************************************************************************************************************************************************/
 
 
-//Import da biblioteca do prisma client (responsável por manipular dados no BD)
 const {PrismaClient} = require('@prisma/client');
 
-//Instancia da classe do PrismaClient
 const prisma = new PrismaClient();
 
-//Retorna todos os registros do banco de dados
 const selectAllJogo = async function (dadosJogo){
     
-    //Variável com scriptSQL para executar no BD
-    let sql = 'select * from tbl_jogo'
+    let sql = `
+        SELECT
+            jogo.nome As nome_jogo,
+            jogo.descricao AS descricao_jogo,
+            jogo.id_nivel AS id_nivel_jogo,
+            nivel.nivel AS nivel,
+            nivel.descricao AS descricao_nivel
+        FROM
+            tbl_jogo AS jogo
+        INNER JOIN
+            tbl_nivel AS nivel ON jogo.id_nivel = nivel.id`
+    
 
-     //Executa bo banxo de dados o scriptSQL
-    //$queryRawUnsafe() é utilizado quando o scriptSQL estar em uma variável
-    //$queryRaw() é utilizado quansonpassar o scipt direto no metodo(Ex>$queryRaw('select * from tbl_aluno'))
+
     let rsJogo = await prisma.$queryRawUnsafe(sql)
 
     if (rsJogo.length > 0)
@@ -31,15 +36,24 @@ const selectAllJogo = async function (dadosJogo){
 };
 
 
-//retorna um Registro do banco de dados
 const selectByIdJogo = async function (id){
 
-    //Variável com scriptSQL para executar no BD
-    let sql = `select * from tbl_jogo where id = ${id}`
+    
+    let sql = `
+        SELECT
+            jogo.nome AS nome_jogo,
+            jogo.descricao AS descricao_jogo,
+            jogo.id_nivel AS id_nivel_jogo,
+            nivel.nivel AS nivel,
+            nivel.descricao AS descricao_nivel
+        FROM
+            tbl_jogo AS jogo
+        INNER JOIN
+            tbl_nivel AS nivel ON jogo.id_nivel = nivel.id
+        WHERE
+            jogo.id = ${id}
+`;
 
-    //Executa bo banxo de dados o scriptSQL
-    //$queryRawUnsafe() é utilizado quando o scriptSQL estar em uma variável
-    //$queryRaw() é utilizado quansonpassar o scipt direto no metodo(Ex>$queryRaw('select * from tbl_aluno'))
     let rsJogo = await prisma.$queryRawUnsafe(sql)
 
     if (rsJogo.length > 0)
@@ -48,7 +62,6 @@ const selectByIdJogo = async function (id){
         return false
 }
 
-//Inserir um novo registro no banco de dados
 const insertJogo = async function (dadosJogo) {
 
     
@@ -66,20 +79,19 @@ const insertJogo = async function (dadosJogo) {
                 '${dadosJogo.nome}',
                 '${dadosJogo.descricao}',
                  ${dadosJogo.id_nivel},
-                (SELECT nivel, descricao FROM tbl_nivel WHERE nivel, descricao = '${dadosJogo.nivel}', '${dadosJogo.descricao}')
+                
+                
                 )`;
-            
-    //(SELECT id_nivel FROM nivel WHERE nome_nivel = '${dadosJogo.nome_nivel}')
+
+   
 
 
- //Executa o script SQL no BD e recebemos o retorno se deu certo ou não
  const test = await prisma.$executeRawUnsafe(sql)
 
  return test
 };
 
 
-//Atualizar um registro existente no banco de dados
 const updateJogo = async function (dadosJogo){
 
     let sql = `update tbl_jogo set
@@ -96,7 +108,6 @@ const updateJogo = async function (dadosJogo){
 };
 
 
-//Excluir um registro no Banco de dados
 const deleteJogo = async function (id){
     
     let sql = `delete from tbl_jogo 
@@ -111,10 +122,8 @@ const deleteJogo = async function (id){
 };
 
 
-//se conecta a um banco de dados para recuperar o ID mais recente da tabela
 const selectLastId = async function(){
     
-    //Script
     let sql = `select id from tbl_jogo order by id desc limit 1`
 
     let rsJogo = await prisma.$querRawUnsafe(sql)
