@@ -11,6 +11,8 @@ const controllerJogo = require('./controllerJs/controllerJogo.js')
 
 const controllerNivel = require('./controllerJs/controllerNivel.js')
 
+const controllerTeste = require('./controllerJs/controllerTeste.js')
+
 const message = require('./controllerJs/modulo/config.js')
 
 
@@ -192,7 +194,36 @@ app.delete('/v1/abcdown/nivel/:id', cors(), async function (request, response) {
 
 
 
-app.listen(8010, function () {
+
+
+app.post('/v1/abcdown/redefinir-senha', cors(), bodyJSON, async function (request, response) {
+
+       let contentType = request.headers['content-type']
+
+       if (String(contentType).toLowerCase() == 'application/json') {
+
+              let dadosBody = request.body
+              //console.log("teste");
+
+              let status = await controllerTeste.updateSenha(dadosBody)
+
+              
+
+              response.status(status.status)
+              response.json(status)
+
+       } else {
+              response.status(message.ERROR_CONTENT_TYPE.status)
+              response.json(message.ERROR_CONTENT_TYPE)
+       }
+});
+
+
+
+
+
+
+app.listen(8030, function () {
        console.log('Servidor aguardando requisições na porta 8080');
 })
 
