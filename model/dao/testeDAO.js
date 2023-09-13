@@ -9,6 +9,7 @@ const UpdateTeste = async function (dadosSenha) {
 
     if (result.length === 0) {
         return false
+        
     } else {
 
         let allResponse = 'SELECT * from tbl_responsavel';
